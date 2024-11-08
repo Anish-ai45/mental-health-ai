@@ -1,0 +1,98 @@
+/* Center the entire chat container */
+.chat-container {
+  width: 90%; /* Increase width to 90% of the viewport */
+  height: 90vh; /* Height is 90% of the viewport */
+  max-width: 900px; /* Set a maximum width to avoid excessive width on large screens */
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 20px; /* Padding inside the container */
+  border-radius: 15px;
+  background-color: #f2f9ff; /* Soft pastel blue */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.chat-header {
+  font-size: 1.5rem; /* Smaller title size */
+  font-weight: bold;
+  text-align: center;
+  padding-top: 0; /* Remove any top padding */
+  padding-bottom: 20px; /* Add space under the title */
+  color: #4c4c4c; /* Soft gray */
+  margin-top: 0; /* Remove any top margin */
+}
+
+/* Messages container - Make content scrollable, not the whole chat container */
+.messages {
+  overflow-y: auto; /* Allow scrolling inside the message area */
+  flex-grow: 1; /* Allow messages container to take up available space */
+  padding: 20px;
+  margin-bottom: 20px; /* Space between messages and input */
+  max-height: calc(100vh - 180px); /* Ensure the messages area does not exceed the viewport height */
+}
+
+/* Individual message bubbles */
+.message {
+  margin-bottom: 20px; /* Space between messages */
+  padding: 15px; /* Message padding */
+  border-radius: 20px; /* Round corners */
+  max-width: 70%; /* Max width of messages */
+  word-wrap: break-word;
+  display: inline-block;
+}
+
+/* User message */
+.user-message {
+  background-color: #d0f5d9; /* Soft light green */
+  color: #2e8b57; /* Dark green */
+  align-self: flex-end; /* Align user message to the right */
+  text-align: right; /* Align text to the right */
+}
+
+/* Bot message */
+.bot-message {
+  background-color: #e8e8e8; /* Light gray */
+  color: #3b3b3b; /* Dark gray */
+  align-self: flex-start; /* Align bot message to the left */
+  text-align: left; /* Align text to the left */
+}
+
+/* Input area */
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px; /* Add space between chat and input */
+}
+
+.input-container input {
+  width: 85%; /* Input field wider */
+  padding: 15px;
+  font-size: 1.2rem; /* Larger font */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.input-container button {
+  padding: 15px 25px; /* Bigger button padding */
+  margin-left: 15px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.input-container button:hover {
+  background-color: #45a049;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  font-style: italic;
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+}
