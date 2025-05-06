@@ -1,0 +1,8 @@
+models:
+  - type: main
+    engine: local
+    model: llama3
+
+rails:
+  input:
+    flows: [mental_health_flows.co]

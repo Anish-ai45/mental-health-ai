@@ -1,64 +1,72 @@
-function sendMessage() {
-    const userInput = document.getElementById("user-input").value;
-    
-    if (userInput.trim() === "") {
-        return; // Don't send an empty message
-    }
+let isFirstMessage = true;
 
-    // Add user's message to the chatbox
-    const chatBox = document.getElementById("messages");
-    const userMessage = document.createElement("div");
-    userMessage.classList.add('message', 'user-message');
-    userMessage.textContent = "You: " + userInput;
-    chatBox.appendChild(userMessage);
-    
-    // Clear input field after sending message
-    document.getElementById("user-input").value = "";
+document.addEventListener('DOMContentLoaded', function() {
+  const messagesContainer = document.querySelector('.messages');
 
-    // Scroll chatbox to the bottom
-    chatBox.scrollTop = chatBox.scrollHeight;
+  // Clear the messages container when the page loads
+  messagesContainer.innerHTML = '';
+});
 
-    // Display a typing indicator
-    const typingIndicator = document.createElement("div");
-    typingIndicator.classList.add("typing-indicator");
-    typingIndicator.textContent = "AI is typing...";
-    chatBox.appendChild(typingIndicator);
-    
-    // Send the request to the backend API
-    fetch("/api/chat", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ input: userInput })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Remove the typing indicator
-        chatBox.removeChild(typingIndicator);
+// Send a message to the backend and append the response
+function sendMessage(userMessage) {
+  const messagesContainer = document.querySelector('.messages');
+  const userInputField = document.getElementById('user-input');
+  
+  // Ensure that placeholder text is not sent as the user input
+  if (userInputField.value.trim() === userInputField.placeholder) {
+    return; // Do nothing if the user hasn't typed anything yet (i.e., the placeholder is still there)
+  }
 
-        // Add bot's response to the chatbox
-        const botMessage = document.createElement("div");
-        botMessage.classList.add('message', 'bot-message');
-        botMessage.textContent = "AI: " + data.response;
-        chatBox.appendChild(botMessage);
-        
-        // Scroll chatbox to the bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
-    })
-    .catch(error => {
-        // Handle any errors
-        console.error("Error:", error);
-        chatBox.removeChild(typingIndicator);
-    });
+  // Append user message to the chat (this is the user's input)
+  appendMessage(userMessage, 'user-message');
+
+  // Send the user message to the backend API
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ input: userMessage })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Append the response from the bot
+    const botResponse = data.response;
+    appendMessage(botResponse, 'bot-message');
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
 
-// Add event listener to send button
-document.getElementById("send-btn").addEventListener("click", sendMessage);
+// Append a message to the chat (either user or bot)
+function appendMessage(content, messageType) {
+  const messagesContainer = document.querySelector('.messages');
+  
+  const message = document.createElement('div');
+  message.className = `message ${messageType}`;
+  message.textContent = content;
 
-// Allow sending message by pressing Enter key
-document.getElementById("user-input").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        sendMessage();
+  messagesContainer.appendChild(message);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight; // Auto-scroll to bottom
+}
+
+// Event listener for Send button
+document.getElementById('send-btn').addEventListener('click', function() {
+  const userInput = document.getElementById('user-input').value;
+  if (userInput.trim() !== "" && userInput !== document.getElementById('user-input').placeholder) {
+    sendMessage(userInput);
+    document.getElementById('user-input').value = ''; // Clear input field
+  }
+});
+
+// Event listener for Enter key press
+document.getElementById('user-input').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    const userInput = document.getElementById('user-input').value;
+    if (userInput.trim() !== "" && userInput !== document.getElementById('user-input').placeholder) {
+      sendMessage(userInput);
+      document.getElementById('user-input').value = ''; // Clear input field
     }
+  }
 });

@@ -1,0 +1,11 @@
+define user ask about code
+  "Can you write a Python function?"
+  "How do I make a palindrome in Python?"
+  "Write a Python script to calculate the factorial."
+
+define bot decline to answer
+  "I'm here to help with mental health support. Let's focus on that."
+
+define flow
+  user ask about code
+  bot decline to answer
